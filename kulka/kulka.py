@@ -20,7 +20,6 @@ def event(events):
 
 # fukcja losowy cel kulki
 def los():
-    global los_wsp
     a = [random.randint(0, 500), 0]
     b = [500, random.randint(0, 500)]
     c = [random.randint(0, 500), 500]
@@ -73,8 +72,8 @@ blekitny = (0, 255, 255)
 # endregion
 
 # wspolrzedne ekranu
-W = 500
-H = 100
+W = 250
+H = 450
 pol_W = W // 2
 pol_H = H // 2
 
@@ -95,13 +94,13 @@ kier_y = 0  # przyszle kierunki lotu
 r_x = 0
 r_y = 0  # przyszłe losowe docelowe wspolrzedne
 
-szybkosc = 5  # szybkosc kulki
+szybkosc = 3  # szybkosc kulki
 
 p = 10  # promien kulki
 
 kol = bialy  # kolor kulki
 
-timer = 6  # czestotliwosc mozliwosci zmiany koloru
+timer = 24  # czestotliwosc mozliwosci zmiany koloru
 
 # endregion
 
@@ -109,9 +108,9 @@ while True:
     event(pygame.event.get())
     timer += 1
     m = pygame.mouse.get_pressed()
-    if m[0] and timer > 12:
+    if m[0] and timer > 24:
         kol = los_kol()
-        if kol == None:
+        if kol is None:
             kol = los_kol()
         timer = 0
 
