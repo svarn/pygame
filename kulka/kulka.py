@@ -8,7 +8,7 @@ from pygame.locals import *
 pygame.init()
 
 
-# eventy
+# funkcja na eventy i wyjscie
 def event(events):
     for event in events:
         if event.type == QUIT:
@@ -18,7 +18,7 @@ def event(events):
 #            print(event)
 
 
-# losowy cel kulki
+# fukcja losowy cel kulki
 def los():
     global los_wsp
     a = [random.randint(0, 500), 0]
@@ -38,6 +38,25 @@ def los():
     return los_wsp
 
 
+#  funkcja na losowy kolor kulki
+def los_kol():
+    z = random.randint(1, 7)
+    if z == 1 and kol != bialy:
+        return bialy
+    if z == 2 and kol != czerwony:
+        return czerwony
+    if z == 3 and kol != zielony:
+        return zielony
+    if z == 4 and kol != niebieski:
+        return niebieski
+    if z == 5 and kol != zolty:
+        return zolty
+    if z == 6 and kol != fioletowy:
+        return fioletowy
+    if z == 7 and kol != blekitny:
+        return blekitny
+
+
 # zegar
 FPS = 120
 fps_clock = pygame.time.Clock()
@@ -55,7 +74,7 @@ blekitny = (0, 255, 255)
 
 # wspolrzedne ekranu
 W = 500
-H = 500
+H = 100
 pol_W = W // 2
 pol_H = H // 2
 
@@ -76,14 +95,25 @@ kier_y = 0  # przyszle kierunki lotu
 r_x = 0
 r_y = 0  # przyszłe losowe docelowe wspolrzedne
 
-szybkosc = 3  # szybkosc kulki
+szybkosc = 5  # szybkosc kulki
 
 p = 10  # promien kulki
+
+kol = bialy  # kolor kulki
+
+timer = 6  # czestotliwosc mozliwosci zmiany koloru
 
 # endregion
 
 while True:
     event(pygame.event.get())
+    timer += 1
+    m = pygame.mouse.get_pressed()
+    if m[0] and timer > 12:
+        kol = los_kol()
+        if kol == None:
+            kol = los_kol()
+        timer = 0
 
     if j == 0:
         r = los()
@@ -145,8 +175,11 @@ while True:
         elif kulka_y > H - p:
             j = 3
 
-    print(kulka_x, kulka_y)
-    pygame.draw.circle(EKRAN, bialy, (int(kulka_x), int(kulka_y)), p, 0)
+#    print(kulka_x, kulka_y)
+    try:
+        pygame.draw.circle(EKRAN, kol, (int(kulka_x), int(kulka_y)), p, 0)
+    except TypeError:
+        pass
     pygame.display.update()
     fps_clock.tick(FPS)
     EKRAN.fill(czarny)
