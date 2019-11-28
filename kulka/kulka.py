@@ -45,6 +45,10 @@ fps_clock = pygame.time.Clock()
 # kolory
 bialy = (255, 255, 255)
 czarny = (0, 0, 0)
+czerwony = (255, 0, 0)
+zielony = (0, 255, 0)
+niebieski = (0, 0, 255)
+
 
 # wspolrzedne ekranu
 W = 500
@@ -66,11 +70,7 @@ kier_x = 0
 kier_y = 0
 r_x = 0
 r_y = 0
-odl = 0
-odl1 = 0
-d = 2
 szybkosc = 2
-licznik = 250
 # endregion
 
 while True:
@@ -82,67 +82,59 @@ while True:
         r_y = r[1]
         j += 1
 
-    if odl == 0 and j == 1:
+    if j == 1:
         radiany = math.atan2(r_y - doc_y, r_x - doc_x)
-        odl = math.hypot(r_x - doc_x, r_y - doc_y) / szybkosc
-        odl = int(odl)
-        odl1 = odl
         kier_x = math.cos(radiany) * szybkosc
         kier_y = math.sin(radiany) * szybkosc
-
-        doc_x = r_x
-        doc_y = r_y
-
         j += 1
 
-    if odl > 0:
-        odl -= 1
+    if j == 2:
         kulka_x += kier_x
         kulka_y += kier_y
+        if kulka_x < 10:
+            j = 3
+        elif kulka_x > 490:
+            j = 3
+        elif kulka_y < 10:
+            j = 4
+        elif kulka_y > 490:
+            j = 4
 
-    if odl == 0:
-        if j == 2:
-            if doc_y == 0 or doc_y == 500:
-                kulka_x += kier_x
-                kulka_y -= kier_y
-                d = 0
-                if int(kulka_x) in range(-10, 15) or int(kulka_x) in range(490, 511):
-                    j = 3
-            if doc_x == 500 or doc_x == 0:
-                kulka_x -= kier_x
-                kulka_y += kier_y
-                d = 1
-                if int(kulka_y) in range(-10, 15) or int(kulka_y) in range(490, 511):
-                    j = 3
+    if j == 3:
+        kulka_x -= kier_x
+        kulka_y += kier_y
+        if kulka_x < 10:
+            j = 2
+        elif kulka_x > 490:
+            j = 2
+        elif kulka_y < 10:
+            j = 5
+        elif kulka_y > 490:
+            j = 5
 
-        if j == 3:
-            kulka_x -= kier_x
-            kulka_y -= kier_y
-            if int(kulka_y) in range(511) and int(kulka_x) in range(-10, 15):
-                if d == 0:
-                    j = 6
-                elif d == 1:
-                    j = 5
-            elif int(kulka_y) in range(511) and int(kulka_x) in range(490, 511):
-                if d == 0:
-                    j = 6
-                elif d == 1:
-                    j = 5
+    if j == 4:
+        kulka_x += kier_x
+        kulka_y -= kier_y
+        if kulka_x < 10:
+            j = 5
+        elif kulka_x > 490:
+            j = 5
+        elif kulka_y < 10:
+            j = 2
+        elif kulka_y > 490:
+            j = 2
 
-#            if (int(kulka_y) in range(-1, 11) or int(kulka_y) in range(490, 501)) or (int(kulka_x) in range(-1, 11) or int(kulka_x) in range(490, 501)):
-#                j = 4
-
-        if j == 4:
-            kulka_x += kier_x
-            kulka_y += kier_y
-
-        if j == 5:
-            kulka_x += kier_x
-            kulka_y -= kier_y
-
-        if j == 6:
-            kulka_x -= kier_x
-            kulka_y += kier_y
+    if j == 5:
+        kulka_x -= kier_x
+        kulka_y -= kier_y
+        if kulka_x < 10:
+            j = 4
+        elif kulka_x > 490:
+            j = 4
+        elif kulka_y < 10:
+            j = 3
+        elif kulka_y > 490:
+            j = 3
 
     print(kulka_x, kulka_y)
     pygame.draw.circle(EKRAN, bialy, (int(kulka_x), int(kulka_y)), 10, 0)
