@@ -9,13 +9,13 @@ pygame.init()
 
 
 # funkcja na eventy i wyjscie
+
 def event(events):
     for event in events:
         if event.type == QUIT:
             pygame.quit()
             sys.exit(0)
-#        else:
-#            print(event)
+#        print(event)
 
 
 # fukcja losowy cel kulki
@@ -72,8 +72,8 @@ blekitny = (0, 255, 255)
 # endregion
 
 # wspolrzedne ekranu
-W = 250
-H = 450
+W = 750
+H = 500
 pol_W = W // 2
 pol_H = H // 2
 
@@ -106,6 +106,7 @@ timer = 24  # czestotliwosc mozliwosci zmiany koloru
 
 while True:
     event(pygame.event.get())
+
     timer += 1
     m = pygame.mouse.get_pressed()
     if m[0] and timer > 24:
@@ -113,6 +114,13 @@ while True:
         if kol is None:
             kol = los_kol()
         timer = 0
+    elif pygame.key.get_pressed()[K_UP]:
+        kier_x = kier_x * 1.02
+        kier_y = kier_y * 1.02
+    elif pygame.key.get_pressed()[K_DOWN]:
+        kier_x = kier_x / 1.02
+        kier_y = kier_y / 1.02
+
 
     if j == 0:
         r = los()
