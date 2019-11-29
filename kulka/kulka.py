@@ -9,7 +9,6 @@ pygame.init()
 
 
 # funkcja na eventy i wyjscie
-
 def event(events):
     for event in events:
         if event.type == QUIT:
@@ -72,8 +71,8 @@ blekitny = (0, 255, 255)
 # endregion
 
 # wspolrzedne ekranu
-W = 750
-H = 500
+W = 1283
+H = 650
 pol_W = W // 2
 pol_H = H // 2
 
@@ -120,7 +119,6 @@ while True:
     elif pygame.key.get_pressed()[K_DOWN]:
         kier_x = kier_x / 1.02
         kier_y = kier_y / 1.02
-
 
     if j == 0:
         r = los()
