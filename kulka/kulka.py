@@ -8,13 +8,7 @@ from pygame.locals import *
 pygame.init()
 
 
-# funkcja na eventy i wyjscie
-def event(events):
-    for event in events:
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit(0)
-#        print(event)
+
 
 
 # fukcja losowy cel kulki
@@ -71,8 +65,8 @@ blekitny = (0, 255, 255)
 # endregion
 
 # wspolrzedne ekranu
-W = 1283
-H = 650
+W = 500
+H = 500
 pol_W = W // 2
 pol_H = H // 2
 
@@ -101,11 +95,27 @@ kol = bialy  # kolor kulki
 
 timer = 24  # czestotliwosc mozliwosci zmiany koloru
 
+mn = 1.05  # mnoznik przyspieszenia/spowolnienia
+
 # endregion
 
 while True:
-    event(pygame.event.get())
 
+    # region eventy: wyjscie, przyspieszanie scrollem
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit(0)
+        if event.type == MOUSEBUTTONDOWN:
+            if event.button == 4:
+                kier_x = kier_x * mn
+                kier_y = kier_y * mn
+            elif event.button == 5:
+                kier_x = kier_x / mn
+                kier_y = kier_y / mn
+    #  endregion
+
+    # region zmienianie koloru, przyspieszanie strzalkami
     timer += 1
     m = pygame.mouse.get_pressed()
     if m[0] and timer > 24:
@@ -114,11 +124,12 @@ while True:
             kol = los_kol()
         timer = 0
     elif pygame.key.get_pressed()[K_UP]:
-        kier_x = kier_x * 1.02
-        kier_y = kier_y * 1.02
+        kier_x = kier_x * mn
+        kier_y = kier_y * mn
     elif pygame.key.get_pressed()[K_DOWN]:
-        kier_x = kier_x / 1.02
-        kier_y = kier_y / 1.02
+        kier_x = kier_x / mn
+        kier_y = kier_y / mn
+    # endregion
 
     if j == 0:
         r = los()
