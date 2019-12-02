@@ -8,9 +8,6 @@ from pygame.locals import *
 pygame.init()
 
 
-
-
-
 # fukcja losowy cel kulki
 def los():
     a = [random.randint(0, 500), 0]
