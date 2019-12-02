@@ -94,6 +94,15 @@ timer = 24  # czestotliwosc mozliwosci zmiany koloru
 
 mn = 1.05  # mnoznik przyspieszenia/spowolnienia
 
+blok = ()
+b = 1  # czy bloczek
+
+blok_x = 0
+blok_y = 0  # wspolrzedne bloku
+
+rb = 50  # rozmiar bloku
+
+c = pygame.draw.circle(EKRAN, kol, (int(kulka_x), int(kulka_y)), p, 0)
 # endregion
 
 while True:
@@ -110,6 +119,8 @@ while True:
             elif event.button == 5:
                 kier_x = kier_x / mn
                 kier_y = kier_y / mn
+        else:
+            print(event)
     #  endregion
 
     # region zmienianie koloru, przyspieszanie strzalkami
@@ -128,6 +139,14 @@ while True:
         kier_y = kier_y / mn
     # endregion
 
+    if b == 1 and timer > 24:
+        blok_x = random.randint(0, W)
+        blok_y = random.randint(0, H)
+        blok = (blok_x, blok_y, rb, rb)
+        b = 2
+        timer = 0
+        print(blok)
+
     if j == 0:
         r = los()
         r_x = r[0]
@@ -143,54 +162,92 @@ while True:
     if j == 2:
         kulka_x += kier_x
         kulka_y += kier_y
-        if kulka_x < p:
+        if kulka_x < p or kulka_x > W - p:
             j = 3
-        elif kulka_x > W - p:
-            j = 3
-        elif kulka_y < p:
+        elif kulka_y < p or kulka_y > H - p:
             j = 4
-        elif kulka_y > H - p:
-            j = 4
+        elif c.colliderect(blok):
+            if kulka_x < blok_x:
+                j = 3
+                b = 1
+            elif kulka_x > blok_x + rb:
+                j = 3
+                b = 1
+            elif kulka_y < blok_y:
+                j = 4
+                b = 1
+            elif kulka_y < blok_y + rb:
+                j = 4
+                b = 1
 
     if j == 3:
         kulka_x -= kier_x
         kulka_y += kier_y
-        if kulka_x < p:
+        if kulka_x < p or kulka_x > W - p:
             j = 2
-        elif kulka_x > W - p:
-            j = 2
-        elif kulka_y < p:
+        elif kulka_y < p or kulka_y > H - p:
             j = 5
-        elif kulka_y > H - p:
-            j = 5
+        elif c.colliderect(blok):
+            if kulka_x < blok_x:
+                j = 2
+                b = 1
+            elif kulka_x > blok_x + rb:
+                j = 2
+                b = 1
+            elif kulka_y < blok_y:
+                j = 5
+                b = 1
+            elif kulka_y < blok_y + rb:
+                j = 5
+                b = 1
 
     if j == 4:
         kulka_x += kier_x
         kulka_y -= kier_y
-        if kulka_x < p:
+        if kulka_x < p or kulka_x > W - p:
             j = 5
-        elif kulka_x > W - p:
-            j = 5
-        elif kulka_y < p:
+        elif kulka_y < p or kulka_y > H - p:
             j = 2
-        elif kulka_y > H - p:
-            j = 2
+        elif c.colliderect(blok):
+            if kulka_x < blok_x:
+                j = 5
+                b = 1
+            elif kulka_x > blok_x + rb:
+                j = 2
+                b = 1
+            elif kulka_y < blok_y:
+                j = 2
+                b = 1
+            elif kulka_y < blok_y + rb:
+                j = 5
+                b = 1
 
     if j == 5:
         kulka_x -= kier_x
         kulka_y -= kier_y
-        if kulka_x < p:
+        if kulka_x < p or kulka_x > W - p:
             j = 4
-        elif kulka_x > W - p:
-            j = 4
-        elif kulka_y < p:
+        elif kulka_y < p or kulka_y > H - p:
             j = 3
-        elif kulka_y > H - p:
-            j = 3
+        elif c.colliderect(blok):
+            if kulka_x < blok_x:
+                j = 4
+                b = 1
+            elif kulka_x > blok_x + rb:
+                j = 3
+                b = 1
+            elif kulka_y < blok_y:
+                j = 4
+                b = 1
+            elif kulka_y < blok_y + rb:
+                j = 3
+                b = 1
 
 #    print(kulka_x, kulka_y)
     try:
+        c = pygame.draw.circle(EKRAN, kol, (int(kulka_x), int(kulka_y)), p, 0)
         pygame.draw.circle(EKRAN, kol, (int(kulka_x), int(kulka_y)), p, 0)
+        pygame.draw.rect(EKRAN, bialy, blok)
     except TypeError:
         pass
     pygame.display.update()
